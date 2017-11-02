@@ -1,0 +1,65 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+version = '1.0'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Hystrix Producer',
+                   'Implementation-Version': version
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    
+	compile("org.springframework.boot:spring-boot-starter-web") {
+		exclude module: "spring-boot-starter-tomcat"
+	}
+	compile("org.springframework.boot:spring-boot-starter-jetty")
+	
+	//spring health metrics...
+	compile group: 'org.springframework.boot', name: 'spring-boot-actuator', version: '1.5.6.RELEASE'
+	
+	/*//spring cloud consul service
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-consul-all', version: '1.0.2.RELEASE'
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-feign', version: '1.3.0.RELEASE'
+	
+	//spring data jpa
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '1.5.6.RELEASE'*/
+	
+	//sprign hystrix 
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-hystrix', version: '1.3.4.RELEASE'
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-hystrix-dashboard', version: '1.3.4.RELEASE'
+	
+	compile ('mysql:mysql-connector-java:6.0.2')
+	
+	compile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.2.2'
+	compile ('log4j:log4j:1.2.17')
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs 'repos'
+       }
+    }
+}
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.5.RELEASE")
+	}
+}
